@@ -1,0 +1,140 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!markdown
+
+파일 타입은 .dib 와 .ipynb 이 있습니다. .dib 파일은 .NET 노트북에 적합한 파일 형식
+
+#!csharp
+
+int number = 8;
+Console.WriteLine(number);
+
+#!csharp
+
+Console.WriteLine("Hello, .NET notebook!")
+
+#!csharp
+
+public class Book
+{
+    private string title;
+    private string author;
+    
+    public string Title
+    {
+        get { return title;}
+        set { title = value;}
+    }
+
+    public string Author
+    {
+        get { return author;}
+        set { author = value;}
+    }
+
+    public void PrintInfo()
+    {
+        Console.WriteLine($"Title : {title}, Author : {author}");
+    }
+}
+
+Book book = new Book();
+book.Title = "C# Programming";
+book.Author = "Sung Jung";
+book.PrintInfo();
+
+#!markdown
+
+set 함수는 value가 주체이기 때문에, 필드에있는 변수를 사용하고, Title 또는 Author 변수를 이용해서 class의 속성을 제어한다. 
+
+#!csharp
+
+public class Person
+{
+    private string name;
+
+    public string Name
+    {
+        get { return name; }  // 값을 읽는 메서드
+        set { name = value; } // 값을 설정하는 메서드
+    }
+
+    private int age;
+    public int Age
+    {  
+        get { return age;}
+        set { if(value  > 0 )
+                {age = value;}
+                else{
+                    Console.WriteLine("Age must be greater than 0.");
+                } }
+    }
+
+    // 메서드(Method)
+    public void Speak()
+    {
+        Console.WriteLine($"Hello, my name is {Name}.");
+    }
+}
+
+Person person = new Person();
+person.Name = "Alice";
+person.Age = 25;
+Console.WriteLine($"Name: {person.Name}, Age: {person.Age}");
+person.Age = -5;
+
+#!markdown
+
+조건문을 할때도 value로 시작을 해야 한다. 
+
+#!csharp
+
+dynamic dynVar = 10;
+dynVar = "Now a string";
+
+Console.WriteLine(dynVar);
+
+#!csharp
+
+object objVar = 10;
+objVar = (int)objVar + 10;
+Console.WriteLine(objVar);
+
+#!markdown
+
+objVar 앞에 타입을 설정해줘야함.
+
+#!csharp
+
+int? nullableAge = null;
+
+nullableAge = 25;
+
+if (nullableAge.HasValue)
+{
+    Console.WriteLine($"Age is {nullableAge.Value}");
+}
+else
+{
+    Console.WriteLine("Age is not set.");
+}
+
+#!csharp
+
+public struct Rectangle
+{
+    public int Width { get; set;}
+    public int Heigth { get; set;}
+}
+
+Rectangle rectangle = new Rectangle();
+rectangle.Width = 5;
+rectangle.Heigth = 10;
+
+Console.WriteLine($"{rectangle.Width} , {rectangle.Heigth}")
+
+#!markdown
+
+단순 데이터 입출력 방식에는 get, set 함수만 사용가능함.
