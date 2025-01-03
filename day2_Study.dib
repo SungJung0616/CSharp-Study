@@ -6,6 +6,21 @@
 
 interface와 deligate 이해하기
 
+#!markdown
+
+interface를 왜 사용하면 좋은지
+
+인터페이스 타입 변수로 여러 가지 다른 객체를 참조할 수 있습니다.
+서로 다른 클래스들이 동일한 인터페이스를 구현하면, 하나의 타입으로 처리할 수 있습니다.
+
+클래스를 변경하지 않고도 새로운 기능을 쉽게 추가할 수 있습니다.
+
+코드의 확장성과 일관성을 높여주는 중요한 설계 도구입니다.
+
+#!markdown
+
+interface는 해당 interface를 구현한 class 나 구조체에만 참조가능
+
 #!csharp
 
 public interface IMovable
@@ -45,20 +60,179 @@ movable2.move();
 결국 interface는 역할 분리를 위해서 사용됨. interface를 통해 "어떤 행동을 해야하는지" 정의하고, "어떻게 행동할지는" 클래스에서 개별적으로 구현.
 같은 interface 를 구현한 여러 클래스가 있으면, 코드에서 interface 타입을 통해 통합적으로 다룰수 있음.
 
+#!csharp
+
+public class Animal
+{
+    public void Speak() => Console.WriteLine("Animal speaks");
+}
+
+public class Dog : Animal
+{
+    public void Bark() => Console.WriteLine("Dog barks");
+}
+
+Animal animal = new Dog();
+Dog dog = new Animal();
+animal.Speak();
+animal.Bark();
+
+dog.Bark();
+dog.Speak();
+ 
+
 #!markdown
 
-예제를 통해서 알게된 언리얼 엔진 예제 해석 및 코드 구조:
+예제를 하다고 또 헷갈리는 부분이 있어 정리함. 
+부모 타입 변수는 자식 클래스 객체를 참조 할수 있지만, 부모 클래스 정의된 멤버만 사용가능.
+자식 타입 변수는 부모객체를 참조할수 없다. 
 
-UINTERFACE(MinimalAPI)
-class UInteractable : public UInterface
+#!csharp
+
+public interface IDataService
 {
-    GENERATED_BODY()
+    void GetData();
+}
+
+public class SqlDataService : IDataService 
+{
+    public void GetData() => Console.WriteLine("Fetching data from SQL");
+}
+
+public class App 
+{
+    private readonly IDataService _dataService;
+    public App (IDataService dataService)
+    {
+        _dataService = dataService;
+    }
+
+    public void Run()
+    {
+        _dataService.GetData();
+    }
+}
+
+IDataService dataservice =  new SqlDataService();
+App app = new App(dataservice);
+app.Run();
+
+#!markdown
+
+interface를 확용한 문제
+
+#!csharp
+
+public interface IAnimal
+{
+    void Speak();
+    void Eat();
+}
+
+public class Dog : IAnimal
+{
+    public void Speak() => Console.WriteLine("Woof");
+    public void Eat() => Console.WriteLine("The dog is easting");
+}
+
+public class Cat : IAnimal
+{
+    public void Speak() => Console.WriteLine("Meow");
+    public void Eat() => Console.WriteLine("The cat is easting");
+} 
+
+IAnimal[] animals = {new Dog(), new Cat()};
+
+foreach ( IAnimal animal in animals)
+{
+    animal.Speak();
+    animal.Eat();
+}
+
+#!markdown
+
+코드개선점. 변수를 배열로 관리후 반복문으로 출력력
+
+#!csharp
+
+public interface IVehicle
+{
+    void StartEngine();
+    void StopEngine();
+}
+
+public class Car : IVehicle
+{
+    public void StartEngine() => Console.WriteLine("The car engine is starting");
+    public void StopEngine() => Console.WriteLine("The car engine is stopping");
+}
+
+public class Motocycle : IVehicle
+{
+    public void StartEngine() => Console.WriteLine("The motocycle engine is starting");
+    public void StopEngine() => Console.WriteLine("The motocycle engine is stopping");
+}
+
+IVehicle[] vehicles = {new Car(), new Motocycle()};
+
+foreach ( IVehicle vehicle in vehicles)
+{
+    vehicle.StartEngine();
+    vehicle.StopEngine();
+}
+
+#!markdown
+
+화 문제 (보너스)
+문제: IPotion 인터페이스에 새로운 메서드를 추가하여 포션의 이름을 반환하도록 하고, 사용자가 어떤 포션을 사용했는지 출력하세요.
+🔧 힌트:
+string GetPotionName(); 메서드를 IPotion에 추가하세요.
+각 포션 클래스에서 이름을 반환하도록 구현하세요.
+반복문을 통해 포션 이름과 사용 메시지를 출력하세요.
+
+#!csharp
+
+public interface IPotion
+{
+    void Use();
+    string GetPotionName();
+    int GetEffectAmount();
+}
+
+public class HealthPotion : IPotion
+{
+    public void Use() => Console.WriteLine($"You have restored {GetEffectAmount()} health!");
+    public string GetPotionName() => "Health Potion";
+    public int GetEffectAmount() => 50;
+}
+
+public class ManaPotion : IPotion
+{
+    public void Use() => Console.WriteLine($"You have restored {GetEffectAmount()} mana!");
+    public string GetPotionName() => "Mana Potion";
+    public int GetEffectAmount() => 30;
+}
+
+List<IPotion> potions = new List<IPotion>
+{
+    new HealthPotion(),
+    new ManaPotion()
 };
 
-class IInteractable
+foreach (IPotion potion in potions)
 {
-    GENERATED_BODY()
+    potion.Use();
+    Console.WriteLine($"Potion Used: {potion.GetPotionName()}");
+   }
 
-public:
-    virtual void Interact() = 0; // 순수 가상 함수
-};
+#!markdown
+
+IPotion을 리스트로 관리를 한 이유는?
+**List<IPotion>**는 여러 다양한 포션 타입(HealthPotion, ManaPotion)을 **하나의 컬렉션(List)**으로 관리할 수 있도록 해줍니다.
+리스트에 인터페이스 타입을 사용하면, 인터페이스를 구현한 모든 클래스의 객체를 리스트에 추가할 수 있습니다.
+객체 수가 동적으로 변경될 가능성이 있기 때문에. 
+
+#!markdown
+
+**배열 vs 리스트**
+객체수가 고정적이고 변경되지 않을때 배열, 객체수가 동적으로 변경되거나 데이터 추가/삭제가 비번할때는 리스트사용.
