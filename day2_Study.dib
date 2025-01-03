@@ -1,0 +1,64 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!markdown
+
+interface와 deligate 이해하기
+
+#!csharp
+
+public interface IMovable
+{
+    void move();
+}
+
+public class Car : IMovable
+{
+    public void move()
+    {
+        Console.WriteLine($"The car is moving");
+    }
+}
+
+IMovable movable = new Car();
+movable.move();
+
+public class Bike : IMovable
+{
+    public void move()
+    {
+        Console.WriteLine($"The Bike is moving");
+    }
+}
+
+IMovable movable2 = new Bike();
+movable2.move();
+
+#!markdown
+
+궁금한점, 왜 car class에 move함수가 있고 interface에 있나?
+1. interface 에는 선언만 가능하고 구현할수없다.
+2. IMovable 을 구현하기위해서 Car class 를 이용.
+3. IMovalbe 타입변수를 Car 객체를 참조함으로써, IMovalbe 를 구현체로 교교체할수있는 유연성을 제공
+
+결국 interface는 역할 분리를 위해서 사용됨. interface를 통해 "어떤 행동을 해야하는지" 정의하고, "어떻게 행동할지는" 클래스에서 개별적으로 구현.
+같은 interface 를 구현한 여러 클래스가 있으면, 코드에서 interface 타입을 통해 통합적으로 다룰수 있음.
+
+#!markdown
+
+예제를 통해서 알게된 언리얼 엔진 예제 해석 및 코드 구조:
+
+UINTERFACE(MinimalAPI)
+class UInteractable : public UInterface
+{
+    GENERATED_BODY()
+};
+
+class IInteractable
+{
+    GENERATED_BODY()
+
+public:
+    virtual void Interact() = 0; // 순수 가상 함수
+};
