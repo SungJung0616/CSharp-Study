@@ -1,0 +1,64 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!markdown
+
+Delegate란 무엇인가?
+🔍 간단한 정의:
+**C#의 델리게이트(delegate)**는 **"함수를 가리키는 타입"** 또는 **함수를 참조할 수 있는 타입**을 정의하는것. 
+함수를 변수처럼 저장하고, 다른 함수에 전달하거나, 이벤트처럼 호출할 수 있습니다.
+interface처럼 선언만 가능 하지만 다른건 변수에 함수 할당이 된다는 것.
+
+#!csharp
+
+public delegate void SayHelloDelegate(string name); //declare delegate type  
+
+public static void sayHello(string name)
+{
+    Console.WriteLine($"Hello, {name}");
+}
+
+public static void executefunction(SayHelloDelegate func, string name)
+{
+    func(name);
+}
+
+SayHelloDelegate sayhello = sayHello;
+sayhello("Sung");
+executefunction(sayhello,"john")
+
+#!markdown
+
+static 키워드: class method
+class의 인스턴스를 생성하지 않고 바로 호출할수 있는 메서드나 변수로 사용할수 있다. 
+
+static 을 사용하는 경우
+1. 유틸리티 클래스
+유틸리티 함수나 공용 메서드를 제공할 때 사용합니다.
+예: Math, DateTime, Console 클래스 등.
+
+2. 공유 데이터
+모든 객체가 공유해야 하는 데이터를 저장할 때 사용합니다.
+예: 전역 카운터, 설정 값 등.
+
+3.싱글톤 패턴
+**싱글톤 패턴(Singleton Pattern)**을 구현할 때 static을 사용합니다.
+싱글톤은 하나의 인스턴스만 생성되도록 보장하는 디자인 패턴입니다.
+
+#!markdown
+
+javascript eventListener처럼 사용한 delegate
+
+#!csharp
+
+public delegate void ButtonClickHandler();
+
+public static void ButtonClick()
+{
+    Console.WriteLine("Button clicked!");
+}
+
+ButtonClickHandler onButtonClick = ButtonClick;
+
+onButtonClick();
