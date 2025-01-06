@@ -62,3 +62,42 @@ public static void ButtonClick()
 ButtonClickHandler onButtonClick = ButtonClick;
 
 onButtonClick();
+
+#!markdown
+
+javascript 처럼 이벤트 리스너처럼 변수에 함수를 넣어서 사용 하도록 하는 delegate
+
+#!csharp
+
+//콜백 함수와 델리게이트 예제
+using System;
+
+class Program
+{
+    // 델리게이트 선언
+    public delegate void ProcessUserInputDelegate(string input);
+
+    static void Main()
+    {
+        // 함수 호출 시 델리게이트 전달
+        ProcessUserInput(PrintGreeting);
+    }
+
+    // 사용자 입력을 처리하는 함수
+    public static void ProcessUserInput(ProcessUserInputDelegate callback)
+    {
+        Console.WriteLine("Please enter your name:");
+        string name = Console.ReadLine();
+        callback(name);
+    }
+
+    // 콜백 함수
+    public static void PrintGreeting(string name)
+    {
+        Console.WriteLine($"Hello, {name}!");
+    }
+}
+
+#!markdown
+
+Delegate는 함수의 시크니처와 완전히 일치하는 함수만 참조함. 
