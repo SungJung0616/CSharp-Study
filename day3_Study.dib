@@ -101,3 +101,58 @@ class Program
 #!markdown
 
 Delegate는 함수의 시크니처와 완전히 일치하는 함수만 참조함. 
+코딩 문제
+
+#!csharp
+
+public delegate void NotifyDelegate();
+
+void EmailNotifier()
+{
+    Console.WriteLine("Email notification sent");
+}
+
+void SMSNotifier()
+{
+    Console.WriteLine("SMS notification sent");
+}
+
+NotifyDelegate notify = EmailNotifier;
+notify += SMSNotifier;
+
+notify();
+
+#!csharp
+
+//두번째 코딩 문제
+
+using System;
+
+// 델리게이트 선언
+public delegate void ProcessDelegate(int number);
+
+// 메서드 정의
+void ProcessData(int[] numbers, ProcessDelegate callback)
+{
+    foreach (int number in numbers)
+    {
+        callback(number);
+    }
+}
+
+void PrintNumber(int number)
+{
+    Console.WriteLine($"Number: {number}");
+}
+
+void DoubleNumber(int number)
+{
+    Console.WriteLine($"Double: {number * 2}");
+}
+
+// 데이터 배열 정의 및 호출
+int[] data = { 1, 2, 3 };
+
+// ProcessData 호출
+ProcessData(data, PrintNumber);
+ProcessData(data, DoubleNumber);
