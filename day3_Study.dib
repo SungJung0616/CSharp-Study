@@ -156,3 +156,85 @@ int[] data = { 1, 2, 3 };
 // ProcessData 호출
 ProcessData(data, PrintNumber);
 ProcessData(data, DoubleNumber);
+
+#!markdown
+
+callback = printnumber 로 할당되는걸 이해하면 됨. 
+
+#!csharp
+
+//3rd coding excerise
+public delegate void OperationDelegate (int a, int b);
+
+void MathOperation()
+{     
+    int a = 5;
+    int b = 7;
+
+    Console.WriteLine("Choose operation: 1 for Addition, 2 for Multiplication");
+
+    int choice = 2;
+
+    OperationDelegate operation;
+
+    if (choice == 1)
+    {
+        operation = add;
+    }
+    else
+    {
+        operation = multiply;
+    }
+
+    operation(a,b);
+}
+
+void add (int a , int b)
+{
+    Console.WriteLine($"Addition: {a  + b}");
+}
+
+void multiply(int a, int b)
+{
+    Console.WriteLine(($"Multiply : {a * b}"));
+}
+
+
+MathOperation();
+
+#!markdown
+
+Choice 라는 변수를 사용해 int로 입출력 받아서 조건식에 operation delegate를 add 또는 multiply 참조하는게 핵심. 
+
+#!csharp
+
+using System;
+
+// 델리게이트 선언
+public delegate void ProcessDelegate(int number);
+
+// 메서드 정의
+void ProcessData(int[] numbers, ProcessDelegate callback)
+{
+    foreach (int number in numbers)
+    {
+        callback(number);
+    }
+}
+
+void PrintNumber(int number)
+{
+    Console.WriteLine($"Number: {number}");
+}
+
+void DoubleNumber(int number)
+{
+    Console.WriteLine($"Double: {number * 2}");
+}
+
+// 데이터 배열 정의
+int[] data = { 3, 4, 5, 6 };
+
+// 메서드 호출 (함수 정의 후에 호출)
+ProcessData(data, PrintNumber);
+ProcessData(data, DoubleNumber);

@@ -1,0 +1,83 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+//클래스에 대해서 좀더 이해하기기
+
+#!csharp
+
+public class Person
+{
+    public string Name;
+    public string Birthday;
+
+    public void ShowProfile()
+    {
+        Console.WriteLine($"이름 : {Name}, 생년월일 : {Birthday}");
+    }
+    
+    public void Eat()
+    {
+        Console.WriteLine(Name + "이(가) 밥을 먹었습니다.");
+    }
+
+    public void Walk()
+    {
+        Console.WriteLine(Name + "이(가) 산책을 했습니다.");
+    }
+
+    public void Run()
+    {
+        Console.WriteLine(Name + "이(가) 달리기를 했습니다.");
+    }
+}
+
+Person person = new Person();
+person.Name = "정성욱";
+person.Birthday = "1986년 6월 16일";
+
+person.ShowProfile();
+person.Eat();
+person.Walk();
+person.Run();
+
+#!markdown
+
+데이터 캡슐화 중요성.
+데이터 보호: 클래스 외부에서 속성에 직접 접근하지 못하도록 막음. 
+간단한 게임 예제를 만들면서 노트할것!!
+
+간단한 게임 제작하기.
+게임 규칙 정리 (당신의 설명 기반)
+전투는 1라운드에 공격/수비로 나뉘어 진행되며, 다음과 같은 **액션(행동)**들이 있습니다.
+
+공격하는 쪽의 액션 선택지
+1.   공격	기본 물리 공격 (상대방의 Defense 수치를 고려해 데미지 감소)
+2.   마법 공격	마나(MP)를 사용해 강력한 공격 (방어보다 회피 시 더 큰 데미지)
+3.   기모으기	1라운드에 최대 3번까지 사용 가능하며, 공격력과 마법 공격력 50% 상승
+
+방어하는 쪽의 액션 선택지
+1. 방어	공격 데미지 60%만 받음, 마법 공격 데미지 85%만 받음
+2. 회피	물리 공격은 완전히 회피하지만, 마법 공격에 추가 데미지(25%)
+
+데미지 계산 규칙
+기본 공격	(공격력 - 방어력) (최소 데미지 0)
+방어 상태일 때	공격 데미지: 60% / 마법 공격 데미지: 45%
+회피 상태일 때	공격 데미지: 0 / 마법 공격 데미지: +25% 추가
+
+게임 흐름 (턴제 시스템)
+공격자는 공격, 마법 공격, 기모으기 중 하나를 선택합니다.
+수비자는 방어 또는 회피 중 하나를 선택합니다.
+양쪽의 액션을 비교하고, 데미지를 계산합니다.
+HP가 0 이하가 되면 게임 종료입니다.
+
+ 필요한 클래스
+Character (부모 클래스)
+HP, MP, Attack, MagicAttack, Defense 속성
+AttackTarget() 메서드,
+Player (Character를 상속받음)
+ChooseAction() 메서드
+Enemy (Character를 상속받음)
+RandomAction() 메서드
