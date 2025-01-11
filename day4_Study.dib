@@ -81,3 +81,49 @@ Player (Character를 상속받음)
 ChooseAction() 메서드
 Enemy (Character를 상속받음)
 RandomAction() 메서드
+
+#!markdown
+
+Main()에서 클래스를 사용할때는 using(지시문)을 사용해서 다름 네임스페이스에 있는 클래스들을 Main함수에서 가져와서 사용해야함. 
+
+#!csharp
+
+using System;
+
+public class Player 
+{
+    public string Name {get; set;}
+    public int HP { get; set; }
+    public int MP { get; set; }
+    public int Attack { get; set; }
+    public int MagicAttack { get; set; }
+    public int Defense { get; set; }
+
+    public Player (string name)
+    {   
+        Name = name;
+        RandomStatGenerater();
+    }
+
+    public virtual void ShowStats()
+    {
+        Console.WriteLine($"Name: {Name}");
+        Console.WriteLine($"HP: {HP}, MP: {MP}, Attack: {Attack}, MagicAttack: {MagicAttack} ,Defense: {Defense}");
+    }
+
+    public void RandomStatGenerater()
+    {
+        Random random = new Random();
+
+        HP = random.Next(95,100);
+        MP = random.Next(16, 21);
+        Attack = random.Next(15,20);
+        MagicAttack = random.Next(16,20);
+        Defense = random.Next(3,7);
+    }
+}
+
+Player player = new Player("Sung Jung");
+player.ShowStats();
+player.Name = "Alice";
+player.ShowStats();
